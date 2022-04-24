@@ -1,7 +1,7 @@
 import * as authRepository from "../repositories/authRepository.js";
 import { UserData } from "../interfaces/index.js";
 import bcrypt from "bcrypt";
-import jwt, { JwtPayload } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import "../setup.js";
 
 export async function signUp({ password, email }: UserData) {
