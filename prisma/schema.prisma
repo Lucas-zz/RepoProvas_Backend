@@ -87,7 +87,7 @@ model Term {
 
 model Session {
   id     Int    @id @default(autoincrement())
-  token  String
+  token  String @unique
   userId Int
 
   user User @relation(fields: [userId], references: [id])
