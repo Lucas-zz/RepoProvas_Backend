@@ -24,3 +24,11 @@ export async function signIn(req: Request, res: Response) {
 
     res.send(userData).status(200);
 }
+
+export async function signOut(req: Request, res: Response) {
+    const token: string = res.locals.token
+
+    await authService.signOut(token);
+
+    res.sendStatus(200);
+}

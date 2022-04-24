@@ -31,6 +31,16 @@ export async function findSessionById(id: number) {
     return session;
 }
 
+export async function findSessionByToken(token: string) {
+    const session = await connection.session.findUnique({
+        where: {
+            token
+        }
+    });
+
+    return session;
+}
+
 export async function insertUser(data: UserData) {
     await connection.user.create({
         data
@@ -40,5 +50,13 @@ export async function insertUser(data: UserData) {
 export async function insertSession(data: SessionData) {
     await connection.session.create({
         data
+    });
+}
+
+export async function deleteSession(token: string) {
+    await connection.session.delete({
+        where: {
+            token
+        }
     });
 }

@@ -1,7 +1,7 @@
 import * as authRepository from "../repositories/authRepository.js";
 import { UserData } from "../interfaces/index.js";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import "../setup.js";
 
 export async function signUp({ password, email }: UserData) {
@@ -39,11 +39,29 @@ export async function signIn({ password, email }: UserData) {
     }
 
     const secretKey = process.env.JWT_SECRET;
-    const token = jwt.sign(user.id.toString(), secretKey);
+    const token = jwt.sign({ userId: user.id }, secretKey);
 
     await authRepository.insertSession({ token, userId: user.id });
 
     delete user.password;
 
     return { ...user, token }
+}
+
+export async function signOut(token: string) {
+    await authRepository.deleteSession(token);
+}
+
+export async function verifyToken(token: string) {
+    const secretKey = process.env.JWT_SECRET;
+
+    const { userId } = jwt.verify(token, secretKey) as { userId: number };
+
+    return userId;
+}
+
+export async function verifySession(token: string) {
+    const sessionData = await authRepository.findSessionByToken(token);
+
+    return sessionData;
 }
