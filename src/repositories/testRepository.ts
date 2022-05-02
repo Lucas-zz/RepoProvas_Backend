@@ -1,4 +1,5 @@
 import { connection } from "../db.js";
+import { CreateTestData } from "../interfaces/index.js";
 
 export async function findTestsByDiscipline() {
     const data = await connection.term.findMany({
@@ -39,7 +40,15 @@ export async function findTestsByTeacher() {
     return data;
 }
 
-export async function updateTestViewCount(id: number) {
+export async function addNewTest(testData: CreateTestData) {
+    const data = await connection.test.create({
+        data: testData,
+    });
+
+    return data;
+}
+
+export async function updateTestViewsCount(id: number) {
     const data = await connection.test.update({
         where: {
             id,
