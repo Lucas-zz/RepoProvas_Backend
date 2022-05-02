@@ -38,3 +38,18 @@ export async function findTestsByTeacher() {
 
     return data;
 }
+
+export async function updateTestViewCount(id: number) {
+    const data = await connection.test.update({
+        where: {
+            id,
+        },
+        data: {
+            views: {
+                increment: 1,
+            }
+        }
+    });
+
+    return data;
+}

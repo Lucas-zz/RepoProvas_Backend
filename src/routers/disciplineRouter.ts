@@ -4,6 +4,6 @@ import { validateTokenMiddleware } from "../middlewares/validateTokenMiddleware.
 
 const disciplineRouter = Router();
 
-disciplineRouter.get("/disciplines", validateTokenMiddleware, disciplineController.findDisciplines);
+disciplineRouter.get("/disciplines", validateTokenMiddleware, disciplineController.getAllDisciplines);
 
 export default disciplineRouter;

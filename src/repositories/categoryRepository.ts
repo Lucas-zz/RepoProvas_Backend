@@ -1,6 +1,6 @@
 import { connection } from "../db.js";
 
-export async function findCategories() {
+export async function getAllCategories() {
     const data = await connection.category.findMany({});
 
     return data;

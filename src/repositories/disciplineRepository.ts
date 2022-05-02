@@ -1,6 +1,6 @@
 import { connection } from "../db";
 
-export async function findDisciplines() {
+export async function getAllDisciplines() {
     const data = connection.discipline.findMany({});
 
     return data;
