@@ -35,7 +35,7 @@ export async function findTeacherByName(teacher: string) {
     return data;
 }
 
-export async function getTeacherDiscipline(teacherId: number, disciplineId: number) {
+export async function findTeacherDiscipline(teacherId: number, disciplineId: number) {
     const data = connection.teacherDiscipline.findFirst({
         where: {
             teacherId,
