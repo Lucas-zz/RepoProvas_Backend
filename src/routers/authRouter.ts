@@ -1,7 +1,7 @@
 import { Router } from "express";
-import * as authController from "../controllers/authController.js";
 import { validateSchemaMiddleware } from "../middlewares/validateSchemaMiddleware.js";
 import { validateTokenMiddleware } from "../middlewares/validateTokenMiddleware.js";
+import * as authController from "../controllers/authController.js";
 import * as authSchema from "../schemas/authSchema.js";
 
 const authRouter: Router = Router();

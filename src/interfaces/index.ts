@@ -10,6 +10,10 @@ export interface session {
     userId: number
 }
 
+export interface Filter {
+    groupBy: "discipline" | "teacher";
+}
+
 export type UserData = Omit<user, "id">
 
 export type SessionData = Omit<session, "id">

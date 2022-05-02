@@ -26,7 +26,7 @@ export async function signIn(req: Request, res: Response) {
 }
 
 export async function signOut(req: Request, res: Response) {
-    const token: string = res.locals.token
+    const token = res.locals.token as string
 
     await authService.signOut(token);
 
