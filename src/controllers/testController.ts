@@ -1,7 +1,9 @@
 import { Request, Response } from "express";
 import * as testService from "../services/testService.js";
+import * as testRepository from "../repositories/testRepository.js"
+import { Filter } from "../interfaces/index.js";
 
-export async function findAllTests(req: Request, res: Response) {
+export async function getAllTests(req: Request, res: Response) {
     const { groupBy } = req.query as { groupBy: string };
 
     if (groupBy !== "disciplines" && groupBy !== "teachers") {
@@ -9,7 +11,7 @@ export async function findAllTests(req: Request, res: Response) {
     }
 
     const tests = await testService.findTests({ groupBy });
-    res.send({ tests }).status(200);
+    res.send({ tests });
 }
 
 export async function addNewTest(req: Request, res: Response) {

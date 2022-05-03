@@ -15,8 +15,6 @@ model User {
   email    String @unique
   password String
 
-  session Session[]
-
   @@map("users")
 }
 
@@ -24,7 +22,7 @@ model Category {
   id   Int    @id @default(autoincrement())
   name String @unique
 
-  test Test[]
+  tests Test[]
 
   @@map("categories")
 }
@@ -47,7 +45,7 @@ model Teacher {
   id   Int    @id @default(autoincrement())
   name String @unique
 
-  teacherDiscipline TeacherDiscipline[]
+  teacherDisciplines TeacherDiscipline[]
 
   @@map("teachers")
 }
@@ -57,7 +55,7 @@ model Discipline {
   name   String @unique
   termId Int
 
-  teacherDiscipline TeacherDiscipline[]
+  teacherDisciplines TeacherDiscipline[]
 
   term Term @relation(fields: [termId], references: [id])
 
@@ -69,7 +67,7 @@ model TeacherDiscipline {
   teacherId    Int
   disciplineId Int
 
-  test Test[]
+  tests Test[]
 
   teacher    Teacher    @relation(fields: [teacherId], references: [id])
   discipline Discipline @relation(fields: [disciplineId], references: [id])
@@ -81,17 +79,7 @@ model Term {
   id     Int @id @default(autoincrement())
   number Int @unique
 
-  discipline Discipline[]
+  disciplines Discipline[]
 
   @@map("terms")
-}
-
-model Session {
-  id     Int    @id @default(autoincrement())
-  token  String @unique
-  userId Int
-
-  user User @relation(fields: [userId], references: [id])
-
-  @@map("sessions")
 }

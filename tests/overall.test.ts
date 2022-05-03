@@ -119,25 +119,21 @@ describe("Tests - POST /tests", () => {
     afterAll(disconnectPrismas);
 
     it("returns 422 given invalid body", async () => {
-        const { categoryId, teacherDisciplineId } = await requiredFactory();
-
         const login = await tokenFactory();
 
-        const test = testFactory(categoryId, teacherDisciplineId);
+        const body = {}
 
-        const yeye = "serginho_malandro";
-
-        const promise = await supertest(app).post("/tests").send({ ...test, yeye }).set("Authorization", `Bearer ${login.body.token}`);
+        const promise = await supertest(app).post("/tests").send(body).set("Authorization", `Bearer ${login.body.token}`);
 
         expect(promise.status).toEqual(422);
     });
 
     it("returns 201 given valid body", async () => {
-        const { categoryId, teacherDisciplineId } = await requiredFactory();
+        const { categoryName, disciplineName, teacherName } = await requiredFactory();
 
         const login = await tokenFactory();
 
-        const test = testFactory(categoryId, teacherDisciplineId);
+        const test = testFactory(categoryName, disciplineName, teacherName);
 
         const promise = await supertest(app).post("/tests").send(test).set("Authorization", `Bearer ${login.body.token}`);
 
@@ -152,19 +148,9 @@ describe("Tests - POST /tests", () => {
     })
 });
 
-describe("Update Test Views Count - PUT /tests/:testId/countView", () => {
+describe("Update Test Views Count - PATCH /tests/:testId/countView", () => {
     beforeEach(truncateUsers);
     afterAll(disconnectPrismas);
-
-    it("returns 200 given valid testId", async () => {
-        const testId = 1;
-
-        const login = await tokenFactory();
-
-        const promise = await supertest(app).put(`/tests/${testId}/countView`).set("Authorization", `Bearer ${login.body.token}`);
-
-        expect(promise.status).toEqual(200);
-    });
 
     it("returns 401 given invalid token", async () => {
         const testId = 1;
@@ -173,13 +159,40 @@ describe("Update Test Views Count - PUT /tests/:testId/countView", () => {
 
         expect(promise.status).toEqual(401);
     });
+
+    it("returns 200 given valid testId", async () => {
+        const { categoryName, disciplineName, teacherName } = await requiredFactory();
+
+        const login = await tokenFactory();
+
+        const test = testFactory(categoryName, disciplineName, teacherName);
+
+        await supertest(app).post("/tests").send(test).set("Authorization", `Bearer ${login.body.token}`);
+
+        const tests = await connection.test.findMany({
+            where: {
+                name: test.name,
+            }
+        });
+
+        const testId = tests[0].id;
+
+        const { views: initialViewCount } = await connection.test.findUnique({ where: { id: testId } });
+
+        await supertest(app).patch(`/tests/${testId}/countView`).send({}).set("Authorization", `Bearer ${login.body.token}`);
+
+        const { views: finalViewCount } = await connection.test.findUnique({ where: { id: testId } });
+
+        const result = finalViewCount - initialViewCount
+
+        expect(result).toEqual(1);
+    });
 });
 
 async function truncateUsers() {
     await connection.$executeRaw`
         TRUNCATE TABLE 
             users,
-            sessions,
             tests,
             teachers,
             categories,

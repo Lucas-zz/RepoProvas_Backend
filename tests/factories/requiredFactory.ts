@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 import { connection } from "../../src/db";
 
 export default async function requiredFactory() {
-    const termNumber = faker.datatype.number(10);
+    const termNumber = faker.datatype.number(4);
 
     const term = await connection.term.upsert({
         where: {
@@ -13,7 +13,6 @@ export default async function requiredFactory() {
             number: termNumber,
         },
     });
-
 
     const teacherName = faker.name.findName();
 
@@ -42,17 +41,16 @@ export default async function requiredFactory() {
     });
 
 
-    const teacherDiscipline = await connection.teacherDiscipline.create({
+    await connection.teacherDiscipline.create({
         data: {
             teacherId: teacher.id,
             disciplineId: discipline.id,
         },
     });
 
-
     const categoryName = `P${faker.datatype.number(6)}`;
 
-    const category = await connection.category.upsert({
+    await connection.category.upsert({
         where: {
             name: categoryName,
         },
@@ -64,8 +62,9 @@ export default async function requiredFactory() {
 
 
     const requiredTo = {
-        categoryId: category.id,
-        teacherDisciplineId: teacherDiscipline.id,
+        categoryName: categoryName,
+        disciplineName: disciplineName,
+        teacherName: teacherName,
     };
 
     return requiredTo;

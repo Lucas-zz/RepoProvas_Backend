@@ -1,11 +1,12 @@
 import { faker } from '@faker-js/faker';
-import { CreateTestData } from "../../src/interfaces";
+import { NewTestData } from '../../src/interfaces';
 
-export default function testFactory(categoryId: number, teacherDisciplineId: number): CreateTestData {
+export default function testFactory(categoryName: string, disciplineName: string, teacherName: string): NewTestData {
     return {
         name: faker.name.jobTitle(),
         pdfUrl: faker.internet.url(),
-        categoryId: categoryId,
-        teacherDisciplineId: teacherDisciplineId
+        categoryName: categoryName,
+        disciplineName: disciplineName,
+        teacherName: teacherName,
     };
 }

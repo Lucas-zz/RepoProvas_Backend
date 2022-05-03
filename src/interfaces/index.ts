@@ -15,10 +15,18 @@ export interface Filter {
 }
 
 export type CreateTestData = {
-    name: string;
-    pdfUrl: string;
-    categoryId: number;
-    teacherDisciplineId: number;
+    name: string
+    pdfUrl: string
+    categoryId: number
+    teacherDisciplineId: number
+}
+
+export type NewTestData = {
+    name: string
+    pdfUrl: string
+    categoryName: string
+    disciplineName: string
+    teacherName: string
 }
 
 export type UserData = Omit<user, "id">

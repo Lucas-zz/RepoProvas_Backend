@@ -1,15 +1,15 @@
 import { connection } from "../db.js";
 import { CreateTestData } from "../interfaces/index.js";
 
-export async function findTestsByDiscipline() {
-    return await connection.term.findMany({
+export async function getTestsByDiscipline() {
+    return connection.term.findMany({
         include: {
-            discipline: {
+            disciplines: {
                 include: {
-                    teacherDiscipline: {
+                    teacherDisciplines: {
                         include: {
                             teacher: true,
-                            test: {
+                            tests: {
                                 include: {
                                     category: true,
                                 },
@@ -22,12 +22,12 @@ export async function findTestsByDiscipline() {
     });
 }
 
-export async function findTestsByTeacher() {
-    return await connection.teacherDiscipline.findMany({
+export async function getTestsByTeachers() {
+    return connection.teacherDiscipline.findMany({
         include: {
             teacher: true,
             discipline: true,
-            test: {
+            tests: {
                 include: {
                     category: true,
                 },
