@@ -4,7 +4,8 @@ import * as authService from "../services/authService.js";
 
 
 export async function validateTokenMiddleware(req: Request, res: Response, next: NextFunction) {
-    const token = req.headers.authorization as string;
+    const auth = req.headers.authorization as string;
+    const token = auth?.replace("Bearer ", "");
 
     if (!token) {
         throw {

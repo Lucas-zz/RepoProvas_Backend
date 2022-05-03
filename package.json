@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc",
     "start": "node src/server.js",
-    "dev": "npx nodemon src/server.ts",
+    "dev": "fuser -k 5000/tcp && npx nodemon src/server.ts",
     "dev-test": "dotenv -e .env.test npx nodemon src/server.ts",
     "prisma": "npx prisma studio",
     "prisma-test": "dotenv -e .env.test npx prisma studio",

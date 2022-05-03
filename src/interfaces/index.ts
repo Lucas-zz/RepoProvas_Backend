@@ -11,7 +11,7 @@ export interface session {
 }
 
 export interface Filter {
-    groupBy: "discipline" | "teacher";
+    groupBy: "disciplines" | "teachers";
 }
 
 export type CreateTestData = {

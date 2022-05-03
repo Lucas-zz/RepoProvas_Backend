@@ -4,7 +4,7 @@ import { validateTokenMiddleware } from "../middlewares/validateTokenMiddleware.
 
 const teacherRouter = Router();
 
-teacherRouter.get("/teacher", validateTokenMiddleware, teacherController.getTeacherNames);
+teacherRouter.get("/teachers", validateTokenMiddleware, teacherController.getTeacherNames);
 teacherRouter.get("/teachers/:discipline", validateTokenMiddleware, teacherController.getTeacherByDiscipline);
 
 export default teacherRouter;

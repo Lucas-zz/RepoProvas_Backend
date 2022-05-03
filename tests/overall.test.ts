@@ -91,39 +91,23 @@ describe("Tests - GET /tests", () => {
     afterAll(disconnectPrismas);
 
     it("returns 401 given invalid token", async () => {
-        const body = {};
-
-        const promise = await supertest(app).get("/tests").send(body).set("Authorization", "um_token_bem_errado");
+        const promise = await supertest(app).get("/tests?groupBy=teachers").set("Authorization", "um_token_bem_errado");
 
         expect(promise.status).toEqual(401);
     });
 
-    it("returns 400 given invalid body", async () => {
-        const body = { bananinha: 123 };
-
-        const login = await tokenFactory();
-
-        const promise = await supertest(app).get("/tests").send(body).set("Authorization", login.body.token);
-
-        expect(promise.status).toEqual(400);
-    });
-
     it("returns 400 given invalid groupBy", async () => {
-        const body = { groupBy: "grupo_errado" };
-
         const login = await tokenFactory();
 
-        const promise = await supertest(app).get("/tests").send(body).set("Authorization", login.body.token);
+        const promise = await supertest(app).get("/tests?groupBy=teacher").set("Authorization", `Bearer ${login.body.token}`);
 
         expect(promise.status).toEqual(400);
     });
 
     it("returns object given valid token", async () => {
-        const body = { groupBy: "discipline" };
-
         const login = await tokenFactory();
 
-        const promise = await supertest(app).get("/tests").send(body).set("Authorization", login.body.token);
+        const promise = await supertest(app).get("/tests?groupBy=teachers").set("Authorization", `Bearer ${login.body.token}`);
 
         expect(promise.status).toEqual(200);
         expect(typeof promise.body).toEqual("object");
@@ -143,7 +127,7 @@ describe("Tests - POST /tests", () => {
 
         const yeye = "serginho_malandro";
 
-        const promise = await supertest(app).post("/tests").send({ ...test, yeye }).set("Authorization", login.body.token);
+        const promise = await supertest(app).post("/tests").send({ ...test, yeye }).set("Authorization", `Bearer ${login.body.token}`);
 
         expect(promise.status).toEqual(422);
     });
@@ -155,7 +139,7 @@ describe("Tests - POST /tests", () => {
 
         const test = testFactory(categoryId, teacherDisciplineId);
 
-        const promise = await supertest(app).post("/tests").send(test).set("Authorization", login.body.token);
+        const promise = await supertest(app).post("/tests").send(test).set("Authorization", `Bearer ${login.body.token}`);
 
         const tests = await connection.test.findMany({
             where: {
@@ -177,7 +161,7 @@ describe("Update Test Views Count - PUT /tests/:testId/countView", () => {
 
         const login = await tokenFactory();
 
-        const promise = await supertest(app).put(`/tests/${testId}/countView`).set("Authorization", login.body.token);
+        const promise = await supertest(app).put(`/tests/${testId}/countView`).set("Authorization", `Bearer ${login.body.token}`);
 
         expect(promise.status).toEqual(200);
     });

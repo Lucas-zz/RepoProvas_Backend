@@ -5,9 +5,9 @@ import * as categoryRepository from "../repositories/categoryRepository.js";
 import * as disciplineRepository from "../repositories/disciplineRepository.js";
 
 export function findTests(filter: Filter) {
-    if (filter.groupBy === "discipline") {
+    if (filter.groupBy === "disciplines") {
         return testRepository.findTestsByDiscipline();
-    } else if (filter.groupBy === "teacher") {
+    } else if (filter.groupBy === "teachers") {
         return testRepository.findTestsByTeacher();
     }
 }
