@@ -1,6 +1,6 @@
 import { Router } from "express";
 import * as teacherController from "../controllers/teacherController.js";
-import { validateTokenMiddleware } from "../middlewares/validateTokenMiddleware";
+import { validateTokenMiddleware } from "../middlewares/validateTokenMiddleware.js";
 
 const teacherRouter = Router();
 

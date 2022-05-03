@@ -4,7 +4,7 @@ import * as teacherRepository from "../repositories/teacherRepository.js";
 import * as categoryRepository from "../repositories/categoryRepository.js";
 import * as disciplineRepository from "../repositories/disciplineRepository.js";
 
-export async function findTests(filter: Filter) {
+export function findTests(filter: Filter) {
     if (filter.groupBy === "discipline") {
         return testRepository.findTestsByDiscipline();
     } else if (filter.groupBy === "teacher") {

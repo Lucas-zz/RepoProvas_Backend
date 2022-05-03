@@ -1,17 +1,13 @@
 import { connection } from "../db.js";
 
 export async function getAllCategories() {
-    const data = await connection.category.findMany({});
-
-    return data;
+    return await connection.category.findMany({});
 }
 
 export async function findCategoryByName(category: string) {
-    const data = connection.category.findUnique({
+    return connection.category.findUnique({
         where: {
             name: category,
         }
     });
-
-    return data;
 }

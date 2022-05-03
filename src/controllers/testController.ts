@@ -9,7 +9,7 @@ export async function findAllTests(req: Request, res: Response) {
     }
 
     const tests = await testService.findTests({ groupBy });
-    res.send({ tests });
+    res.send({ tests }).status(200);
 }
 
 export async function addNewTest(req: Request, res: Response) {
@@ -21,7 +21,7 @@ export async function addNewTest(req: Request, res: Response) {
 }
 
 export async function updateTestViewsCount(req: Request, res: Response) {
-    const { id } = req.params;
+    const id = req.params.testId;
 
     await testService.updateTestViewsCount(parseInt(id));
 

@@ -2,7 +2,7 @@ import { connection } from "../db.js";
 import { CreateTestData } from "../interfaces/index.js";
 
 export async function findTestsByDiscipline() {
-    const data = await connection.term.findMany({
+    return await connection.term.findMany({
         include: {
             discipline: {
                 include: {
@@ -20,12 +20,10 @@ export async function findTestsByDiscipline() {
             },
         },
     });
-
-    return data;
 }
 
 export async function findTestsByTeacher() {
-    const data = await connection.teacherDiscipline.findMany({
+    return await connection.teacherDiscipline.findMany({
         include: {
             teacher: true,
             discipline: true,
@@ -36,20 +34,16 @@ export async function findTestsByTeacher() {
             },
         },
     });
-
-    return data;
 }
 
 export async function addNewTest(testData: CreateTestData) {
-    const data = await connection.test.create({
+    return await connection.test.create({
         data: testData,
     });
-
-    return data;
 }
 
 export async function updateTestViewsCount(id: number) {
-    const data = await connection.test.update({
+    return await connection.test.update({
         where: {
             id,
         },
@@ -59,6 +53,4 @@ export async function updateTestViewsCount(id: number) {
             }
         }
     });
-
-    return data;
 }

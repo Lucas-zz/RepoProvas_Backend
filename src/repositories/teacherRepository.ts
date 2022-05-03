@@ -1,17 +1,15 @@
-import { connection } from "../db";
+import { connection } from "../db.js";
 
 export async function getTeacherNames() {
-    const data = await connection.teacher.findMany({
+    return await connection.teacher.findMany({
         select: {
             name: true,
         }
     });
-
-    return data;
 }
 
 export async function getTeacherByDiscipline(discipline: string) {
-    const data = await connection.teacherDiscipline.findMany({
+    return await connection.teacherDiscipline.findMany({
         select: {
             teacher: true,
         },
@@ -21,27 +19,21 @@ export async function getTeacherByDiscipline(discipline: string) {
             }
         }
     });
-
-    return data;
 }
 
 export async function findTeacherByName(teacher: string) {
-    const data = await connection.teacher.findUnique({
+    return await connection.teacher.findUnique({
         where: {
             name: teacher,
         }
     });
-
-    return data;
 }
 
 export async function findTeacherDiscipline(teacherId: number, disciplineId: number) {
-    const data = connection.teacherDiscipline.findFirst({
+    return connection.teacherDiscipline.findFirst({
         where: {
             teacherId,
             disciplineId,
         }
     });
-
-    return data;
 }

@@ -4,64 +4,61 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import "../setup.js";
 
-export async function signUp({ password, email }: UserData) {
+export async function signUp({ email, password }: UserData) {
     const user = await authRepository.findUserByEmail(email);
 
     if (user) {
         throw {
             type: "conflict",
-            message: "email already in use"
+            message: "Email already registered."
         }
     }
 
     const hashPassword = bcrypt.hashSync(password, 10);
 
-    await authRepository.insertUser({ password: hashPassword, email });
+    await authRepository.insertUser({ email, password: hashPassword });
 }
 
-export async function signIn({ password, email }: UserData) {
+export async function signIn({ email, password }: UserData) {
+    const user = await verifyUser({ email, password });
+
+    const secretKey = process.env.JWT_SECRET;
+    const token = jwt.sign({ userId: user.id }, secretKey);
+
+    return token;
+}
+
+export async function findUserById(id: number) {
+    const user = await authRepository.findUserById(id);
+
+    if (!user) {
+        throw {
+            type: "not_found",
+            message: "User not found."
+        }
+    }
+
+    return user;
+}
+
+async function verifyUser({ email, password }: UserData) {
     const user = await authRepository.findUserByEmail(email);
 
     if (!user) {
         throw {
             type: "not_found",
-            message: "credentials invalid"
+            message: "Email invalid."
         }
     }
 
-    const doesPasswordMatch = bcrypt.compareSync(password, user.password);
+    const isPasswordValid = bcrypt.compareSync(password, user.password);
 
-    if (!doesPasswordMatch) {
+    if (!isPasswordValid) {
         throw {
-            type: "unauthorized",
-            message: "credentials invalid"
+            type: "not_found",
+            message: "Password invalid."
         }
     }
 
-    const secretKey = process.env.JWT_SECRET;
-    const token = jwt.sign({ userId: user.id }, secretKey);
-
-    await authRepository.insertSession({ token, userId: user.id });
-
-    delete user.password;
-
-    return { ...user, token }
-}
-
-export async function signOut(token: string) {
-    await authRepository.deleteSession(token);
-}
-
-export async function verifyToken(token: string) {
-    const secretKey = process.env.JWT_SECRET;
-
-    const { userId } = jwt.verify(token, secretKey) as { userId: number };
-
-    return userId;
-}
-
-export async function verifySession(token: string) {
-    const sessionData = await authRepository.findSessionByToken(token);
-
-    return sessionData;
+    return user;
 }

@@ -1,17 +1,13 @@
-import { connection } from "../db";
+import { connection } from "../db.js";
 
 export async function getAllDisciplines() {
-    const data = connection.discipline.findMany({});
-
-    return data;
+    return connection.discipline.findMany({});
 }
 
 export async function findDisciplineByName(discipline: string) {
-    const data = connection.discipline.findUnique({
+    return connection.discipline.findUnique({
         where: {
             name: discipline,
         }
     });
-
-    return data;
 }
